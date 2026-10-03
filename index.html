@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>ChronoClock | Time Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- =====================================================
+     HEADER
+===================================================== -->
+
+    <header class="header">
+      <div class="logo">
+        <span>◷</span>
+
+        ChronoClock
+      </div>
+
+      <button id="settingsBtn" class="settings-btn">⚙ Settings</button>
+    </header>
+
+    <!-- =====================================================
+     SETTINGS OVERLAY
+===================================================== -->
+
+    <div id="settingsOverlay" class="settings-overlay"></div>
+
+    <!-- =====================================================
+     SETTINGS PANEL
+===================================================== -->
+
+    <aside id="settingsPanel" class="settings-panel">
+      <div class="settings-header">
+        <h2>Settings</h2>
+
+        <button id="closeSettings" class="close-btn">×</button>
+      </div>
+
+      <div class="setting-item">
+        <span> Theme </span>
+
+        <button id="themeToggle" class="setting-control">🌙 Dark</button>
+      </div>
+
+      <div class="setting-item">
+        <span> Clock Format </span>
+
+        <button id="formatToggle" class="setting-control">24H</button>
+      </div>
+    </aside>
+
+    <!-- =====================================================
+     MAIN
+===================================================== -->
+
+    <main>
+      <!-- =====================================================
+     HERO
+===================================================== -->
+
+      <section class="hero">
+        <p class="badge">⏱ Personal Time Management Dashboard</p>
+
+        <h1>
+          Manage Your
+
+          <span> Time Smarter. </span>
+        </h1>
+
+        <p class="hero-text">
+          A modern JavaScript time dashboard with clock, stopwatch, countdown,
+          alarms and world time.
+        </p>
+      </section>
+
+      <!-- =====================================================
+     MAIN CLOCK
+===================================================== -->
+
+      <section class="clock-section">
+        <div class="clock-card">
+          <canvas id="canvas" width="320" height="320"></canvas>
+
+          <div id="digitalClock" class="digital-clock">00:00:00</div>
+
+          <div id="dateDisplay" class="date-display">
+            Monday, January 1, 2026
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+     INFO CARDS
+===================================================== -->
+
+      <section class="info-grid">
+        <div class="info-card">
+          <span> DAY </span>
+
+          <strong id="dayName"> Monday </strong>
+        </div>
+
+        <div class="info-card">
+          <span> DATE </span>
+
+          <strong id="dateNumber"> 01 </strong>
+        </div>
+
+        <div class="info-card">
+          <span> MONTH </span>
+
+          <strong id="monthName"> January </strong>
+        </div>
+
+        <div class="info-card">
+          <span> YEAR </span>
+
+          <strong id="yearNumber"> 2026 </strong>
+        </div>
+      </section>
+
+      <!-- =====================================================
+     STOPWATCH
+===================================================== -->
+
+      <section class="tool-section">
+        <div class="section-heading">
+          <p class="section-label">PRECISION TIMER</p>
+
+          <h2>Stopwatch</h2>
+
+          <p>Track elapsed time with millisecond precision.</p>
+        </div>
+
+        <div class="stopwatch-card">
+          <div id="stopwatchDisplay" class="stopwatch-display">00:00:00.00</div>
+
+          <div class="timer-buttons">
+            <button id="startStopwatch" class="primary-btn">▶ Start</button>
+
+            <button id="lapBtn" class="secondary-btn">🏁 Lap</button>
+
+            <button id="resetStopwatch" class="danger-btn">↻ Reset</button>
+          </div>
+
+          <div id="lapList" class="lap-list"></div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+     COUNTDOWN
+===================================================== -->
+
+      <section class="tool-section">
+        <div class="section-heading">
+          <p class="section-label">FOCUS TIMER</p>
+
+          <h2>Countdown Timer</h2>
+
+          <p>Set a countdown and stay focused.</p>
+        </div>
+
+        <div class="countdown-card">
+          <div class="progress-wrapper">
+            <svg
+              class="progress-ring"
+              width="260"
+              height="260"
+              viewBox="0 0 260 260"
+            >
+              <circle
+                class="progress-background"
+                cx="130"
+                cy="130"
+                r="110"
+              ></circle>
+
+              <circle
+                id="progressCircle"
+                class="progress-circle"
+                cx="130"
+                cy="130"
+                r="110"
+              ></circle>
+            </svg>
+
+            <div class="countdown-display">
+              <span id="countdownDisplay"> 00:00 </span>
+
+              <small> remaining </small>
+            </div>
+          </div>
+
+          <div class="countdown-inputs">
+            <div class="input-group">
+              <label for="minutesInput"> Minutes </label>
+
+              <input
+                type="number"
+                id="minutesInput"
+                min="0"
+                max="999"
+                value="5"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="secondsInput"> Seconds </label>
+
+              <input
+                type="number"
+                id="secondsInput"
+                min="0"
+                max="59"
+                value="0"
+              />
+            </div>
+          </div>
+
+          <div class="quick-add">
+            <button class="quick-btn" data-minutes="1">+1 min</button>
+
+            <button class="quick-btn" data-minutes="5">+5 min</button>
+
+            <button class="quick-btn" data-minutes="10">+10 min</button>
+          </div>
+
+          <div class="timer-buttons">
+            <button id="startCountdown" class="primary-btn">▶ Start</button>
+
+            <button id="pauseCountdown" class="secondary-btn">⏸ Pause</button>
+
+            <button id="resetCountdown" class="danger-btn">↻ Reset</button>
+          </div>
+
+          <p id="countdownMessage" class="countdown-message">
+            Set your time and start the countdown.
+          </p>
+        </div>
+      </section>
+
+      <!-- =====================================================
+     ALARM
+===================================================== -->
+
+      <section class="tool-section">
+        <div class="section-heading">
+          <p class="section-label">SMART REMINDER</p>
+
+          <h2>Alarm Manager</h2>
+
+          <p>Create and manage your daily alarms.</p>
+        </div>
+
+        <div class="alarm-card">
+          <div class="alarm-form">
+            <div class="input-group">
+              <label for="alarmTime"> Alarm Time </label>
+
+              <input type="time" id="alarmTime" />
+            </div>
+
+            <div class="input-group">
+              <label for="alarmLabel"> Label </label>
+
+              <input
+                type="text"
+                id="alarmLabel"
+                placeholder="e.g. Study Time"
+                maxlength="30"
+              />
+            </div>
+
+            <button id="addAlarm" class="primary-btn">+ Add Alarm</button>
+          </div>
+
+          <button id="notificationBtn" class="notification-btn">
+            🔔 Enable Notifications
+          </button>
+
+          <div id="alarmList" class="alarm-list">
+            <div class="empty-alarm">No alarms added yet.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+     WORLD CLOCK
+===================================================== -->
+
+      <section class="tool-section">
+        <div class="section-heading">
+          <p class="section-label">GLOBAL TIME</p>
+
+          <h2>World Clock</h2>
+
+          <p>Check the current time in different cities.</p>
+        </div>
+
+        <div class="world-clock-controls">
+          <select id="timezoneSelect" class="timezone-select">
+            <option value="">Select a city...</option>
+
+            <option value="Asia/Dhaka">🇧🇩 Dhaka</option>
+
+            <option value="Europe/London">🇬🇧 London</option>
+
+            <option value="America/New_York">🇺🇸 New York</option>
+
+            <option value="America/Los_Angeles">🇺🇸 Los Angeles</option>
+
+            <option value="Asia/Tokyo">🇯🇵 Tokyo</option>
+
+            <option value="Asia/Dubai">🇦🇪 Dubai</option>
+
+            <option value="Asia/Kolkata">🇮🇳 Kolkata</option>
+
+            <option value="Australia/Sydney">🇦🇺 Sydney</option>
+
+            <option value="Europe/Paris">🇫🇷 Paris</option>
+
+            <option value="Asia/Singapore">🇸🇬 Singapore</option>
+          </select>
+
+          <button id="addTimezone" class="primary-btn">+ Add City</button>
+        </div>
+
+        <div id="worldClockGrid" class="world-clock-grid"></div>
+      </section>
+
+      <!-- =====================================================
+     TIME ZONE CONVERTER
+===================================================== -->
+
+      <section class="tool-section">
+        <div class="section-heading">
+          <p class="section-label">TIME CONVERTER</p>
+
+          <h2>Time Zone Converter</h2>
+
+          <p>Convert a time between two cities.</p>
+        </div>
+
+        <div class="converter-card">
+          <div class="converter-row">
+            <div class="converter-field">
+              <label> From </label>
+
+              <select id="fromTimezone">
+                <option value="Asia/Dhaka">Dhaka</option>
+
+                <option value="Europe/London">London</option>
+
+                <option value="America/New_York">New York</option>
+
+                <option value="Asia/Tokyo">Tokyo</option>
+
+                <option value="Asia/Dubai">Dubai</option>
+              </select>
+            </div>
+
+            <div class="converter-field">
+              <label> Date </label>
+
+              <input type="date" id="converterDate" />
+            </div>
+
+            <div class="converter-field">
+              <label> Time </label>
+
+              <input type="time" id="converterTime" />
+            </div>
+
+            <div class="converter-field">
+              <label> To </label>
+
+              <select id="toTimezone">
+                <option value="Europe/London">London</option>
+
+                <option value="Asia/Dhaka">Dhaka</option>
+
+                <option value="America/New_York">New York</option>
+
+                <option value="Asia/Tokyo">Tokyo</option>
+
+                <option value="Asia/Dubai">Dubai</option>
+              </select>
+            </div>
+          </div>
+
+          <button id="convertTime" class="primary-btn convert-btn">
+            🔄 Convert Time
+          </button>
+
+          <div id="convertedResult" class="converted-result">
+            Select a time and convert it.
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+     QUOTE
+===================================================== -->
+
+      <section class="quote-section">
+        <div class="quote-card">
+          <span class="quote-icon"> “ </span>
+
+          <p>Time is the most valuable resource. Use it wisely.</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- =====================================================
+     FOOTER
+===================================================== -->
+
+    <footer>
+      <p>© 2026 ChronoClock</p>
+
+      <span> Built with HTML • CSS • JavaScript </span>
+    </footer>
+
+    <script src="index.js"></script>
+  </body>
+</html>
